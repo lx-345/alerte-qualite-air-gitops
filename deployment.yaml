@@ -17,11 +17,15 @@ spec:
         app: qualite-air
     spec:
       containers:
+        # 1. Interface Web Streamlit
         - name: streamlit-app
           image: lpanier/alerte-qualite-air:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8501
           env:
+            - name: DB_DIR
+              value: "/app/data"
             - name: SMTP_SERVER
               value: "smtp.gmail.com"
             - name: SMTP_PORT
@@ -29,7 +33,7 @@ spec:
             - name: SMTP_USER
               value: "leo.pa5334@gmail.com"
             - name: SMTP_PASSWORD
-              value: "ptai wyik gzpc wmhf"
+              value: "ptaiwyikgzpcwmhf"
           resources:
             requests:
               memory: "256Mi"
@@ -52,6 +56,39 @@ spec:
           volumeMounts:
             - name: sqlite-stockage
               mountPath: /app/data
+
+        # 2. Moteur d'alerte en arriere-plan
+        - name: alerte-worker
+          image: lpanier/alerte-qualite-air:latest
+          imagePullPolicy: Always
+          command:
+            - "uv"
+            - "run"
+            - "python"
+            - "-m"
+            - "air_quality_app.moteur_alerte.core"
+          env:
+            - name: DB_DIR
+              value: "/app/data"
+            - name: SMTP_SERVER
+              value: "smtp.gmail.com"
+            - name: SMTP_PORT
+              value: "465"
+            - name: SMTP_USER
+              value: "leo.pa5334@gmail.com"
+            - name: SMTP_PASSWORD
+              value: "ptaiwyikgzpcwmhf"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "50m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+          volumeMounts:
+            - name: sqlite-stockage
+              mountPath: /app/data
+
       volumes:
         - name: sqlite-stockage
           persistentVolumeClaim:
