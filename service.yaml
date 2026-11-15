@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-qualite-air
+spec:
+  selector:
+    app: qualite-air
+  ports:
+    - protocol: TCP
+      port: 8501
+      targetPort: 8501
+  type: ClusterIP
