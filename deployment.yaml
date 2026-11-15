@@ -25,7 +25,7 @@ spec:
             - name: SMTP_SERVER
               value: "smtp.gmail.com"
             - name: SMTP_PORT
-              value: "587"
+              value: "465"
             - name: SMTP_USER
               value: "leo.pa5334@gmail.com"
             - name: SMTP_PASSWORD
