@@ -27,9 +27,9 @@ spec:
             - name: SMTP_PORT
               value: "587"
             - name: SMTP_USER
-              value: "leo.pa5334@gmail.com"       # Remplace par ton e-mail
+              value: "leo.pa5334@gmail.com"
             - name: SMTP_PASSWORD
-              value: "ptai wyik gzpc wmhf"  # Remplace par ton mot de passe d'application
+              value: "ptai wyik gzpc wmhf"
           resources:
             requests:
               memory: "256Mi"
@@ -54,5 +54,5 @@ spec:
               mountPath: /app/data
       volumes:
         - name: sqlite-stockage
-              persistentVolumeClaim:
+          persistentVolumeClaim:
             claimName: sqlite-data-pvc
